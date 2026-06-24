@@ -171,9 +171,6 @@ def count_products(db: Session = Depends(get_db)):
 @router.post("/seed")
 def seed_database(db: Session = Depends(get_db)):
 
-    if db.query(Product).count() > 0:
-        return {"message": "Database already seeded"}
-
     categories = [
         "Electronics",
         "Books",
@@ -182,30 +179,21 @@ def seed_database(db: Session = Depends(get_db)):
         "Home"
     ]
 
-    batch_size = 10000
+    products = []
 
-    for start in range(1, 200001, batch_size):
-
-        products = []
-
-        for i in range(start, start + batch_size):
-
-            products.append(
-                Product(
-                    name=f"Product {i}",
-                    category=random.choice(categories),
-                    price=round(random.uniform(100, 5000), 2),
-                    created_at=datetime.now(UTC),
-                    updated_at=datetime.now(UTC)
-                )
+    for i in range(1, 1001):  # pehle test ke liye 1000
+        products.append(
+            Product(
+                name=f"Product {i}",
+                category=random.choice(categories),
+                price=round(random.uniform(100, 5000), 2)
             )
+        )
 
-        db.bulk_save_objects(products)
-        db.commit()
+    db.bulk_save_objects(products)
+    db.commit()
 
-    return {
-        "message": "200000 products inserted successfully"
-    }
+    return {"message": "Seeded"}
 
 @router.get("/test")
 def test(db: Session = Depends(get_db)):
