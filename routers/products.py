@@ -211,3 +211,12 @@ def seed_database(db: Session = Depends(get_db)):
 def test(db: Session = Depends(get_db)):
     products = db.query(Product).limit(5).all()
     return products
+
+@router.get("/debug")
+def debug(db: Session = Depends(get_db)):
+    return {
+        "count": db.query(Product).count(),
+        "first": str(
+            db.query(Product).first()
+        )
+    }
