@@ -1,0 +1,6 @@
+__pycache__/
+.venv/
+pagination_test.py
+insert_product.py
+read_products.py
+products.db
