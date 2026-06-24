@@ -206,3 +206,8 @@ def seed_database(db: Session = Depends(get_db)):
     return {
         "message": "200000 products inserted successfully"
     }
+
+@router.get("/test")
+def test(db: Session = Depends(get_db)):
+    products = db.query(Product).limit(5).all()
+    return products
